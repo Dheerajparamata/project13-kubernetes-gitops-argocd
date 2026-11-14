@@ -277,16 +277,35 @@ kubectl get applications -n project13-gitops
 
 ## Output Screenshots
 
-01-docker-desktop-kubernetes.png
-02-kubernetes-nodes.png
-03-argocd-installation.png
-04-argocd-dashboard.png
-05-github-repository.png
-06-deployment-yaml.png
-07-service-yaml.png
-08-argocd-application.png
-09-argocd-healthy-synced.png
-10-nginx-welcome-page.png
+### 1. Docker Desktop Kubernetes Cluster
+![Docker Desktop Kubernetes](outputs/01-docker-desktop-kubernetes.png)
+
+### 2. Kubernetes Nodes
+![Kubernetes Nodes](outputs/02-kubernetes-nodes.png)
+
+### 3. Argo CD Installation
+![Argo CD Installation](outputs/03-argocd-installation.png)
+
+### 4. Argo CD Dashboard
+![Argo CD Dashboard](outputs/04-argocd-dashboard.png)
+
+### 5. GitHub Repository Structure
+![GitHub Repository](outputs/05-github-repository.png)
+
+### 6. Kubernetes Deployment YAML
+![Deployment YAML](outputs/06-deployment-yaml.png)
+
+### 7. Kubernetes Service YAML
+![Service YAML](outputs/07-service-yaml.png)
+
+### 8. Argo CD Application Configuration
+![Argo CD Application](outputs/08-argocd-application.png)
+
+### 9. Argo CD Healthy and Synced Status
+![Argo CD Healthy and Synced](outputs/09-argocd-healthy-synced.png)
+
+### 10. Nginx Welcome Page
+![Nginx Welcome Page](outputs/10-nginx-welcome-page.png)
 
 ## Conclusion
 
