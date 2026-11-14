@@ -1,29 +1,24 @@
-Project 13 – Kubernetes GitOps with Argo CD
+# Project 13 – Kubernetes GitOps with Argo CD
 
-Project Overview
+## Project Overview
 
 This project demonstrates GitOps-based continuous deployment using Kubernetes and Argo CD. Application configurations are stored in GitHub, and Argo CD continuously monitors the repository and synchronizes the desired state with the Kubernetes cluster.
 
 The application is deployed using Nginx with two replicas.
 
-Technologies Used
+## Technologies Used
 
-Docker Desktop
+- Docker Desktop
+- Kubernetes (kind)
+- Argo CD v3.6.1
+- Git and GitHub
+- YAML
+- Nginx
+- Windows PowerShell
 
-Kubernetes (kind)
+## Architecture
 
-Argo CD v3.6.1
-
-Git and GitHub
-
-YAML
-
-Nginx
-
-Windows PowerShell
-
-Architecture
-
+```text
        Developer
            |
            v
@@ -44,298 +39,259 @@ Architecture
            |
            v
       Web Application
+```
 
-Project Structure
+## Project Structure
 
+```text
 project13-kubernetes-gitops-argocd/
 │
 └── k8s/
     ├── deployment.yaml
     └── service.yaml
+```
 
-Kubernetes Environment
+## Kubernetes Environment
 
-Component
+| Component | Configuration |
+|---|---|
+| Platform | Docker Desktop |
+| Cluster type | kind |
+| Kubernetes version | v1.34.3 |
+| Nodes | 2 |
+| Namespace | project13-gitops |
+| Application | project13-nginx |
+| Container image | nginx:1.27 |
+| Replicas | 2 |
+| Service type | NodePort |
+| NodePort | 30083 |
 
-Configuration
+## Implementation Steps
 
-Platform
+### 1. Enable Kubernetes in Docker Desktop
 
-Docker Desktop
-
-Cluster type
-
-kind
-
-Kubernetes version
-
-v1.34.3
-
-Nodes
-
-2
-
-Namespace
-
-project13-gitops
-
-Application
-
-project13-nginx
-
-Container image
-
-nginx:1.27
-
-Replicas
-
-2
-
-Service type
-
-NodePort
-
-NodePort
-
-30083
-
-Implementation Steps
-
-1. Enable Kubernetes in Docker Desktop
-
-Open Docker Desktop.
-
-Navigate to Settings → Kubernetes.
-
-Enable Kubernetes.
-
-Apply and restart.
+- Open Docker Desktop.
+- Navigate to Settings → Kubernetes.
+- Enable Kubernetes.
+- Apply and restart.
 
 Verify the cluster:
 
+```powershell
 kubectl get nodes
+```
 
-2. Create Project Namespace
+### 2. Create Project Namespace
 
+```powershell
 kubectl create namespace project13-gitops
+```
 
-3. Install Argo CD
+### 3. Install Argo CD
 
+```powershell
 kubectl apply -n project13-gitops -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
 
 Verify installation:
 
+```powershell
 kubectl get pods -n project13-gitops
+```
 
-4. Access Argo CD Dashboard
+### 4. Access Argo CD Dashboard
 
 Start port forwarding:
 
+```powershell
 kubectl port-forward svc/argocd-server -n project13-gitops 8080:443
+```
 
 Open:
 
+```text
 https://localhost:8080
+```
 
 Default username:
 
+```text
 admin
+```
 
 Retrieve the initial password:
 
+```powershell
 $ARGOCD_PASSWORD = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String((kubectl -n project13-gitops get secret argocd-initial-admin-secret -o jsonpath="{.data.password}")))
+```
 
 Display the password locally:
 
+```powershell
 $ARGOCD_PASSWORD
+```
 
-5. Configure Kubernetes Manifests
+### 5. Configure Kubernetes Manifests
 
-Two Kubernetes manifest files were created inside the k8s directory.
+Two Kubernetes manifest files were created inside the `k8s` directory.
 
-deployment.yaml
+**deployment.yaml**
 
-Defines an Nginx Deployment with two replicas using the nginx:1.27 image.
+Defines an Nginx Deployment with two replicas using the `nginx:1.27` image.
 
-service.yaml
+**service.yaml**
 
 Defines a NodePort Service that exposes Nginx on port 30083.
 
-6. Push Configuration to GitHub
+### 6. Push Configuration to GitHub
 
+```powershell
 git add .
 git commit -m "Add Kubernetes deployment and service manifests"
 git push origin main
+```
 
 GitHub Repository:
 
 https://github.com/Dheerajparamata/project13-kubernetes-gitops-argocd
 
-7. Configure Argo CD Application
+### 7. Configure Argo CD Application
 
-An Argo CD application named project13-nginx was created with the following configuration:
+An Argo CD application named `project13-nginx` was created with the following configuration:
 
-Setting
+| Setting | Value |
+|---|---|
+| Application Name | project13-nginx |
+| Project | default |
+| Repository | GitHub Project 13 repository |
+| Revision | main |
+| Path | k8s |
+| Destination | https://kubernetes.default.svc |
+| Namespace | project13-gitops |
+| Sync Policy | Automatic |
+| Auto-Sync | Enabled |
+| Prune | Enabled |
+| Self Heal | Enabled |
 
-Value
-
-Application Name
-
-project13-nginx
-
-Project
-
-default
-
-Repository
-
-GitHub Project 13 repository
-
-Revision
-
-main
-
-Path
-
-k8s
-
-Destination
-
-https://kubernetes.default.svc
-
-Namespace
-
-project13-gitops
-
-Sync Policy
-
-Automatic
-
-Auto-Sync
-
-Enabled
-
-Prune
-
-Enabled
-
-Self Heal
-
-Enabled
-
-8. Configure RBAC Permissions
+### 8. Configure RBAC Permissions
 
 During deployment, a namespace mismatch was identified in the Argo CD application controller ClusterRoleBinding.
 
 The ServiceAccount subject was updated to use:
 
+```yaml
 subjects:
   - kind: ServiceAccount
     name: argocd-application-controller
     namespace: project13-gitops
+```
 
 The permission was verified using:
 
+```powershell
 kubectl auth can-i list clusterroles.rbac.authorization.k8s.io --as=system:serviceaccount:project13-gitops:argocd-application-controller
+```
 
 Result:
 
+```text
 yes
+```
 
-9. Verify Application Synchronization
+### 9. Verify Application Synchronization
 
+```powershell
 kubectl get applications -n project13-gitops
+```
 
 The Argo CD application reached:
 
-Sync Status: Synced
+- Sync Status: Synced
+- Health Status: Healthy
 
-Health Status: Healthy
-
-10. Access the Nginx Application
+### 10. Access the Nginx Application
 
 Port forwarding was used to access the application locally:
 
+```powershell
 kubectl port-forward svc/project13-nginx 8081:80 -n project13-gitops
+```
 
 Open the application:
 
+```text
 http://localhost:8081
+```
 
 The Nginx welcome page was displayed successfully.
 
-Verification Commands
+## Verification Commands
 
 Check Kubernetes nodes:
 
+```powershell
 kubectl get nodes
+```
 
 Check Argo CD pods:
 
+```powershell
 kubectl get pods -n project13-gitops
+```
 
 Check application deployment:
 
+```powershell
 kubectl get deployments -n project13-gitops
+```
 
 Check application pods:
 
+```powershell
 kubectl get pods -n project13-gitops
+```
 
 Check service:
 
+```powershell
 kubectl get svc -n project13-gitops
+```
 
 Check Argo CD applications:
 
+```powershell
 kubectl get applications -n project13-gitops
+```
 
-Project Results
+## Project Results
 
-Successfully created a Kubernetes cluster using Docker Desktop.
+- Successfully created a Kubernetes cluster using Docker Desktop.
+- Installed and configured Argo CD.
+- Connected Argo CD with a GitHub repository.
+- Created Kubernetes Deployment and Service manifests.
+- Configured automatic synchronization, pruning and self-healing.
+- Identified and resolved an RBAC namespace mismatch.
+- Achieved Synced and Healthy application status.
+- Successfully deployed Nginx with two replicas.
+- Accessed the Nginx welcome page through local port forwarding.
 
-Installed and configured Argo CD.
-
-Connected Argo CD with a GitHub repository.
-
-Created Kubernetes Deployment and Service manifests.
-
-Configured automatic synchronization, pruning and self-healing.
-
-Identified and resolved an RBAC namespace mismatch.
-
-Achieved Synced and Healthy application status.
-
-Successfully deployed Nginx with two replicas.
-
-Accessed the Nginx welcome page through local port forwarding.
-
-Output Screenshots
+## Output Screenshots
 
 Add your actual project screenshots in this section.
 
-Docker Desktop Kubernetes Cluster
+1. Docker Desktop Kubernetes Cluster
+2. Kubernetes Nodes
+3. Argo CD Installation
+4. Argo CD Dashboard
+5. GitHub Repository Structure
+6. Kubernetes Deployment YAML
+7. Kubernetes Service YAML
+8. Argo CD Application Configuration
+9. Argo CD Healthy and Synced Status
+10. Nginx Welcome Page
 
-Kubernetes Nodes
-
-Argo CD Installation
-
-Argo CD Dashboard
-
-GitHub Repository Structure
-
-Kubernetes Deployment YAML
-
-Kubernetes Service YAML
-
-Argo CD Application Configuration
-
-Argo CD Healthy and Synced Status
-
-Nginx Welcome Page
-
-Conclusion
+## Conclusion
 
 This project provided practical experience with Kubernetes GitOps using Argo CD. It demonstrated how application configurations stored in GitHub can be synchronized with a Kubernetes cluster, enabling automated deployment and application management.
 
-Project 13 – Completed Successfully!
+**Project 13 – Completed Successfully!**
