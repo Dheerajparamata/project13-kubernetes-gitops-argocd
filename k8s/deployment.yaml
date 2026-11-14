@@ -1,0 +1,21 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project13-nginx
+  namespace: project13-gitops
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: project13-nginx
+  template:
+    metadata:
+      labels:
+        app: project13-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          ports:
+            - containerPort: 80
