@@ -281,31 +281,31 @@ kubectl get applications -n project13-gitops
 ![Docker Desktop Kubernetes](screenshots/01-docker-desktop-kubernetes.png)
 
 ### 2. Kubernetes Nodes
-![Kubernetes Nodes](outputs/02-kubernetes-nodes.png)
+![Kubernetes Nodes](screenshots/02-kubernetes-nodes.png)
 
 ### 3. Argo CD Installation
-![Argo CD Installation](outputs/03-argocd-installation.png)
+![Argo CD Installation](screenshots/03-argocd-installation.png)
 
 ### 4. Argo CD Dashboard
-![Argo CD Dashboard](outputs/04-argocd-dashboard.png)
+![Argo CD Dashboard](screenshots/04-argocd-dashboard.png)
 
 ### 5. GitHub Repository Structure
-![GitHub Repository](outputs/05-github-repository.png)
+![GitHub Repository](screenshots/05-github-repository.png)
 
 ### 6. Kubernetes Deployment YAML
-![Deployment YAML](outputs/06-deployment-yaml.png)
+![Deployment YAML](screenshots/06-deployment-yaml.png)
 
 ### 7. Kubernetes Service YAML
-![Service YAML](outputs/07-service-yaml.png)
+![Service YAML](screenshots/07-service-yaml.png)
 
 ### 8. Argo CD Application Configuration
-![Argo CD Application](outputs/08-argocd-application.png)
+![Argo CD Application](screenshots/08-argocd-application.png)
 
 ### 9. Argo CD Healthy and Synced Status
-![Argo CD Healthy and Synced](outputs/09-argocd-healthy-synced.png)
+![Argo CD Healthy and Synced](screenshots/09-argocd-healthy-synced.png)
 
 ### 10. Nginx Welcome Page
-![Nginx Welcome Page](outputs/10-nginx-welcome-page.png)
+![Nginx Welcome Page](screenshots/10-nginx-welcome-page.png)
 
 ## Conclusion
 
