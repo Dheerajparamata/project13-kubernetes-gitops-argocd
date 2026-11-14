@@ -278,15 +278,15 @@ kubectl get applications -n project13-gitops
 ## Output Screenshots
 
 01-docker-desktop-kubernetes.png
-│   ├── 02-kubernetes-nodes.png
-│   ├── 03-argocd-installation.png
-│   ├── 04-argocd-dashboard.png
-│   ├── 05-github-repository.png
-│   ├── 06-deployment-yaml.png
-│   ├── 07-service-yaml.png
-│   ├── 08-argocd-application.png
-│   ├── 09-argocd-healthy-synced.png
-│   └── 10-nginx-welcome-page.png
+02-kubernetes-nodes.png
+03-argocd-installation.png
+04-argocd-dashboard.png
+05-github-repository.png
+06-deployment-yaml.png
+07-service-yaml.png
+08-argocd-application.png
+09-argocd-healthy-synced.png
+10-nginx-welcome-page.png
 
 ## Conclusion
 
