@@ -278,7 +278,7 @@ kubectl get applications -n project13-gitops
 ## Output Screenshots
 
 ### 1. Docker Desktop Kubernetes Cluster
-![Docker Desktop Kubernetes](outputs/01-docker-desktop-kubernetes.png)
+![Docker Desktop Kubernetes](screenshots/01-docker-desktop-kubernetes.png)
 
 ### 2. Kubernetes Nodes
 ![Kubernetes Nodes](outputs/02-kubernetes-nodes.png)
